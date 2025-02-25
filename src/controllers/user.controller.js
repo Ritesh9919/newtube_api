@@ -29,9 +29,13 @@ export const register = async (req, res, next) => {
       coverImage: coverImage.url,
     });
 
+    const createdUser = await User.findById(newUser._id).select(
+      "-password -refreshToken"
+    );
+
     return res
       .status(201)
-      .json(new ApiResponse(200, newUser, "User register successfully"));
+      .json(new ApiResponse(200, createdUser, "User register successfully"));
   } catch (error) {
     console.error(error);
     next(error);
